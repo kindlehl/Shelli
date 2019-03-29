@@ -5,7 +5,7 @@ def createHostGroupsFromYaml(yaml):
     groups = []
     hosts = host.createHostsFromYaml(yaml)
     for groupyml in yaml['hostgroups']:
-        groupname = groupyml.keys()[0]
+        groupname = list(groupyml.keys())[0]
         groups.append(HostGroup(groupname, hosts, groupyml))
     return groups
     
@@ -28,7 +28,7 @@ class HostGroup:
         self.name = groupname
         # names of all hosts in the group (might not be needed) IMMUTABLE
         self.hostnames =  yaml[groupname]['hosts']
-        if 'Options' in yaml[groupname].keys():
+        if 'Options' in list(yaml[groupname].keys()):
             self.options = copy.deepcopy(yaml[groupname]['options'])
         else:
             self.options = {}

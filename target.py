@@ -16,9 +16,10 @@ class Target:
         self.name = name
         self.commands = target_yaml['commands']
         self.hostgroup_names = target_yaml['hostgroups']
-        self.transports = []
-        if 'transport' in target_yaml.keys():
+        if 'transport' in list(target_yaml.keys()):
             self.transports = target_yaml['transport']
+        else:
+            self.transports = []
 
         self.hostgroups = []
         for group in all_hostgroups:
@@ -31,12 +32,19 @@ class Target:
     def __repl__(self):
         return str(self)
 
+    def getAllHosts(self):
+        all_hosts = []
+        for group in self.hostgroups:
+            for host in group.hosts:
+                all_hosts.append(host)
+        return all_hosts
+
 
 def createTargetsFromYaml(yaml):
     all_hostgroups = hostgroup.createHostGroupsFromYaml(yaml)
     targets = []
     for target in yaml['targets']:
-        target_name = target.keys()[0]
-        new_target = Target(target_name, all_hostgroups, target) 
+        target_name = list(target.keys())[0]
+        new_target = Target(target_name, all_hostgroups, target[target_name]) 
         targets.append(new_target)
     return targets

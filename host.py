@@ -1,5 +1,6 @@
 # Sets default options for a host.
 def defaultOptions():
+    # These are the only guaranteed options for a host
     return {
         'port': 22,
         'username': 'root',
@@ -19,7 +20,7 @@ def defaultOptions():
 def createHostsFromYaml(yaml):
     hosts = []
     for host_dict in yaml['hosts']:
-        hostname = host_dict.keys()[0]
+        hostname = list(host_dict.keys())[0]
         if host_dict[hostname] is None:
             hosts.append(Host(hostname, defaultOptions()))
         else:
@@ -35,7 +36,7 @@ class Host:
        self.options = yaml
 
     def __str__(self):
-        return "%s@%s:%s" % (self.options['username'], self.hostname, self.options['port'])
+        return "%s@%s" % (self.options['username'], self.hostname)
 
     def __repl__(self):
         return str(self)
