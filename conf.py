@@ -3,7 +3,7 @@ import os
 
 def _default_path():
     home = os.environ['HOME']
-    return os.path.join(home, '.commander.yml')
+    return os.path.join(home, '.shelli.yml')
 
 class YAMLoader:
     _yaml = {}
