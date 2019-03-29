@@ -18,7 +18,7 @@ def defaultOptions():
 
 def createHostsFromYaml(yaml):
     hosts = []
-    for host_dict in yaml['Hosts']:
+    for host_dict in yaml['hosts']:
         hostname = host_dict.keys()[0]
         if host_dict[hostname] is None:
             hosts.append(Host(hostname, defaultOptions()))
