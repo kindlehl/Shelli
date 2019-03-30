@@ -1,0 +1,35 @@
+hosts:
+  - ns3:
+  - fiat:
+      auth_method: key
+      password: shhhh
+      port: 9000
+  - ns2
+hostgroups:
+  - DNS:
+      hosts:
+        - ns1
+        - ns2
+      options:
+        auth_method: key
+        username: root
+  - fiat:
+      hosts:
+        - fiat
+targets:
+  - touch:
+      hostgroups:
+        - fiat
+      commands:
+        - touch /home/kindlehl/testingcommander1
+        - touch /home/kindlehl/testingcommander2
+  - my_scripts:
+      hostgroups:
+        - DNS
+      transport:
+        - /home/kindlehl/my_script1:/tmp/my_script1
+        - /home/kindlehl/my_script1:/tmp/my_script2
+      commands:
+        - ls
+        - /tmp/my_script1
+        - /tmp/my_script2
