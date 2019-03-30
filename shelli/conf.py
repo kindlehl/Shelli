@@ -14,7 +14,9 @@ class YAMLoader:
             print('Error: File not found', path)
             exit(1)
         self._path = path
-        self._yaml = yaml.load(open(self._path))
+        with open(self._path) as yamlfile:
+            # Could use yaml.SafeLoader to load yaml safely
+            self._yaml = yaml.load(yamlfile, Loader=yaml.FullLoader)
         
     def __str__(self):
         return yaml.dump(self._yaml)

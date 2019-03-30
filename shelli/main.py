@@ -1,7 +1,4 @@
-import conf
-import target
-import cli_parser
-import remote_execution
+from shelli import conf, target, cli_parser, remote_execution
 
 args = cli_parser.get()
 

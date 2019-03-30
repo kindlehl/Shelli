@@ -5,6 +5,7 @@ from getpass import getpass
 class Executor:
     def __init__(self, target):
         self.hosts = target.getAllHosts()
+        print(target.commands)
         self.commands = target.commands
 
     def transport():
@@ -22,6 +23,7 @@ class Executor:
                 }
             )
             for command in self.commands:
+                print(command)
                 conn.run(command)
 
     def cleanup():

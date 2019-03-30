@@ -1,4 +1,4 @@
-import host
+import shelli.host
 import copy
 
 def createHostGroupsFromYaml(yaml):

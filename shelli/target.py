@@ -1,5 +1,5 @@
 import copy
-import hostgroup
+import shelli.hostgroup
 
 # Valid yml exerpt
 # targets:
