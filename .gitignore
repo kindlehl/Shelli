@@ -2,3 +2,7 @@
 *.swp
 Session.vim
 local.yml
+__pycache__
+Shelli.egg-info
+build
+dist
