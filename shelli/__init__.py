@@ -1,9 +1,10 @@
+"""Module for shelli program"""
+
 __all__ = [
     'cli_parser',
     'conf',
     'hostgroup',
     'host',
-    'remote_execution',
+    'executor',
     'target'
 ]
-

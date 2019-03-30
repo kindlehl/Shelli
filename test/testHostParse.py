@@ -15,7 +15,7 @@ defaults = {
 class TestHostParse(unittest.TestCase):
     def setUp(self):       
         yaml = conf.YAMLoader(path='test/simple.yml')
-        self.hosts = host.createHostsFromYaml(yaml)
+        self.hosts = host.create_hosts_from_yaml(yaml)
 
     def test_default_hash(self):
         for h in self.hosts:

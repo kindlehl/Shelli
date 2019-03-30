@@ -1,13 +1,25 @@
+"""
+Class for hosts and their authentication paramters.
+Also provides helper functions for loading host objects
+from yaml
+"""
+
+import copy
+
 # Sets default options for a host.
-def defaultOptions():
-    # These are the only guaranteed options for a host
-    return {
-            'auth_method': 'password',
-            'username': 'root',
-            'key': None,
-            'password': None,
-            'port': 22
-        }
+def default_options():
+    """Returns default authentication settings."""
+
+    options = {
+        'auth_method': 'password',
+        'username': 'root',
+        'key': None,
+        'password': None,
+        'port': 22
+    }
+
+    return copy.deepcopy(options)
+
 # Valid YAML exerpt
 # hosts:
 #   - ns1:
@@ -16,35 +28,44 @@ def defaultOptions():
 #       auth_secret: my password
 #   - ns2:
 
-def createHostsFromYaml(yaml):
+def create_hosts_from_yaml(yaml):
+    """Creates a list of host objects from yaml config."""
+
     hosts = []
     for host_object in yaml['hosts']:
-        if type(host_object) is str:
+        if isinstance(host_object, str):
             hostname = host_object
             host_object = {hostname: None}
         else:
             hostname = list(host_object.keys())[0]
 
         if host_object[hostname] is None:
-            hosts.append(Host(hostname, defaultOptions()))
+            hosts.append(Host(hostname, default_options()))
         else:
-            # Put all things like auth_method, auth_user in a variable called options on the host object
-            options = defaultOptions()
+            # Put all things like auth_method, auth_user in
+            # a variable called options on the host object
+            options = default_options()
             options.update(host_object[hostname])
             hosts.append(Host(hostname, options))
     return hosts
 
 class Host:
-    def __init__(self, hostname, yaml=defaultOptions()):
-       self.hostname = hostname
-       self.options = yaml
+    """
+    Class to describe a hostname and the authentication options
+    used to login to the machine. It has sane default authentication
+    options such as root user and password auth.
+    """
+
+    def __init__(self, hostname, yaml=default_options()):
+        self.hostname = hostname
+        self.options = yaml
 
     def __str__(self):
         return "%s@%s" % (self.options['username'], self.hostname)
 
     def __repl__(self):
         return str(self)
- 
+
     def __getitem__(self, index):
         return self.options[index]
 

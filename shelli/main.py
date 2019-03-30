@@ -1,12 +1,16 @@
-from shelli import conf, target, cli_parser, remote_execution
+"""
+Entry point for shelli cli
+"""
 
-args = cli_parser.get()
+from shelli import conf, target, cli_parser, executor
+
+ARGS = cli_parser.get()
 
 # Loads yml configuration. Without path argument, defaults to ~/.commander.yml
-yaml = conf.YAMLoader()
-targets = target.createTargetsFromYaml(yaml)
+YAML = conf.YAMLoader()
+TARGETS = target.create_targets_from_yaml(YAML)
 
-for t in targets:
-    if t.name == args.target:
-        runner = remote_execution.Executor(t)
+for t in TARGETS:
+    if t.name == ARGS.target:
+        runner = executor.Executor(t)
         runner.execute()

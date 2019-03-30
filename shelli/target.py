@@ -1,5 +1,10 @@
-import copy
-import shelli.hostgroup
+"""
+Module for working with targets. Provides a class that
+initializes a target from yaml, and offers helper methods
+for dealing with targets.
+"""
+
+from shelli import hostgroup
 
 # Valid yml exerpt
 # targets:
@@ -12,6 +17,8 @@ import shelli.hostgroup
 # Targets are READ ONLY
 # Do NOT modify anything in them. This way, you won't need to make copies of everything!!!
 class Target:
+    """Class to represent a target. Created with a yaml object"""
+
     def __init__(self, name, all_hostgroups, target_yaml):
         self.name = name
         self.commands = target_yaml['commands']
@@ -32,7 +39,9 @@ class Target:
     def __repl__(self):
         return str(self)
 
-    def getAllHosts(self):
+    def get_all_hosts(self):
+        """Returns list of all hosts on target."""
+
         all_hosts = []
         for group in self.hostgroups:
             for host in group.hosts:
@@ -40,11 +49,13 @@ class Target:
         return all_hosts
 
 
-def createTargetsFromYaml(yaml):
-    all_hostgroups = hostgroup.createHostGroupsFromYaml(yaml)
+def create_targets_from_yaml(yaml):
+    """Creates a list of all targets, given a yaml object"""
+
+    all_hostgroups = hostgroup.create_host_groups_from_yaml(yaml)
     targets = []
     for target in yaml['targets']:
         target_name = list(target.keys())[0]
-        new_target = Target(target_name, all_hostgroups, target[target_name]) 
+        new_target = Target(target_name, all_hostgroups, target[target_name])
         targets.append(new_target)
     return targets

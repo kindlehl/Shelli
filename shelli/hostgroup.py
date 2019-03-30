@@ -1,14 +1,24 @@
-import shelli.host
-import copy
+"""
+Implements a class to represent a group of hosts
+and default authentication for all hosts within
+the group. Individual host configuration will
+overwrite the group settings. Also provides helper
+methods such as loading groups from yaml.
+"""
 
-def createHostGroupsFromYaml(yaml):
+import copy
+from shelli import host
+
+def create_host_groups_from_yaml(yaml):
+    """Loads groups into list from yaml passed in"""
+
     groups = []
-    hosts = host.createHostsFromYaml(yaml)
+    hosts = host.create_hosts_from_yaml(yaml)
     for groupyml in yaml['hostgroups']:
         groupname = list(groupyml.keys())[0]
         groups.append(HostGroup(groupname, hosts, groupyml))
     return groups
-    
+
 # Valid YAML exerpt
 #
 # Hostgroups:
@@ -18,16 +28,18 @@ def createHostGroupsFromYaml(yaml):
 #         - ns2
 #       Options:
 #         auth_method: PSK
-#         auth_secret: 'Insecure as fuck' 
+#         auth_secret: 'Insecure as fuck'
 #
 #
 # python representation -> [{'DNS': {'Hosts': ['ns1','ns2']}}]
 
 class HostGroup:
+    """Class for creating a hostgroup from yaml."""
+
     def __init__(self, groupname, all_host_objects, yaml):
         self.name = groupname
         # names of all hosts in the group (might not be needed) IMMUTABLE
-        self.hostnames =  yaml[groupname]['hosts']
+        self.hostnames = yaml[groupname]['hosts']
         if 'Options' in list(yaml[groupname].keys()):
             self.options = copy.deepcopy(yaml[groupname]['options'])
         else:
