@@ -4,13 +4,7 @@ import unittest
 
 from shelli import *
 
-defaults = {
-    'auth_method': 'password',
-    'username': 'root',
-    'key': None,
-    'password': None,
-    'port': 22
-}
+defaults = host.default_options()
 
 class TestHostParse(unittest.TestCase):
     def setUp(self):       
@@ -19,9 +13,7 @@ class TestHostParse(unittest.TestCase):
 
     def test_default_hash(self):
         for h in self.hosts:
-            if h.hostname == 'ns3':
-                self.assertEqual(h.options, defaults)
-            elif h.hostname == 'ns2':
+            if h.hostname == 'ns2':
                 self.assertEqual(h.options, defaults)
 
     def test_string_as_host(self):

@@ -16,7 +16,7 @@ def create_host_groups_from_yaml(yaml):
     hosts = host.create_hosts_from_yaml(yaml)
     for groupyml in yaml['hostgroups']:
         groupname = list(groupyml.keys())[0]
-        groups.append(HostGroup(groupname, hosts, groupyml))
+        groups.append(HostGroup(groupname, groupyml[groupname], hosts))
     return groups
 
 # Valid YAML exerpt
@@ -36,29 +36,28 @@ def create_host_groups_from_yaml(yaml):
 class HostGroup:
     """Class for creating a hostgroup from yaml."""
 
-    def __init__(self, groupname, all_host_objects, yaml):
+    def __init__(self, groupname, yaml, all_host_objects):
         self.name = groupname
         # names of all hosts in the group (might not be needed) IMMUTABLE
-        self.hostnames = yaml[groupname]['hosts']
-        if 'Options' in list(yaml[groupname].keys()):
-            self.options = copy.deepcopy(yaml[groupname]['options'])
-        else:
-            self.options = {}
-        self.hosts = []
+        self.hostnames = yaml['hosts']
+        self.options = host.default_options()
+
+        if 'options' in list(yaml.keys()):
+            self.options.update(yaml['options'])
+
+        self.hosts = {}
         for host_object in all_host_objects:
             if host_object.hostname in self.hostnames:
-                # copy host object
                 new_host = copy.deepcopy(host_object)
-                # save options passed to host in yml configuration
-                new_host_original_options = copy.deepcopy(new_host.options)
-                # change the host's options to the group defaults
-                new_host.options = copy.deepcopy(self.options)
 
-                # Merge host-specific options into group defaults
-                # semantically, this means that the group defaults will be applied, but the
-                # host-specific options will stick
-                new_host.options.update(new_host_original_options)
-                self.hosts.append(new_host)
+                if new_host.options == host.default_options():
+                    new_host.options = self.options
+                else:
+                    original_options = copy.deepcopy(new_host.options)
+                    new_host.options = copy.deepcopy(self.options)
+                    new_host.options.update(original_options)
+
+                self.hosts[new_host.hostname] = new_host
 
     def __str__(self):
         return self.name

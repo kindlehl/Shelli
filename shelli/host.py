@@ -13,9 +13,9 @@ def default_options():
     options = {
         'auth_method': 'password',
         'username': 'root',
+        'port': 22,
         'key': None,
-        'password': None,
-        'port': 22
+        'password': None
     }
 
     return copy.deepcopy(options)
