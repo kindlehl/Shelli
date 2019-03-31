@@ -17,6 +17,7 @@ class YAMLoader:
     _path = ''
 
     def __init__(self, path=_default_path()):
+        path = os.path.expanduser(path)
         if not os.path.exists(path):
             print('Error: File not found', path)
             exit(1)

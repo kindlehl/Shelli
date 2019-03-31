@@ -10,6 +10,12 @@ def get():
     parser = argparse.ArgumentParser(description='Execute commands in across server groups')
 
     parser.add_argument(
+        '-c', '--config',
+        default='~/.shelli.yml',
+        help='Path to YAML configuration file',
+    )
+
+    parser.add_argument(
         'target',
         help='Target to run as defined in the YAML',
     )

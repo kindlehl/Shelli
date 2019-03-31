@@ -26,6 +26,7 @@ class Executor:
         # Instead of 5 minutes later, after running a long command
         conns = []
         for cur_host in self.hosts.values():
+            print("Creating connection {name}".format(name=cur_host.hostname))
             conns.append(authenticate.get_connection(cur_host))
 
         for conn in conns:
