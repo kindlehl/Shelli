@@ -1,0 +1,32 @@
+hosts:
+  - a
+  - b
+  - c
+hostgroups:
+  - ab:
+      hosts:
+        - a
+        - b
+      options:
+        auth_method: key
+  - ac:
+      hosts:
+        - a
+        - c
+targets:
+  - abac:
+      hostgroups:
+        - ab
+        - ac
+      transport:
+        - /home/kindlehl/.zshrc:/root/.zshrc
+      commands: 
+        - ls /home
+        - ls /test/path
+  - ab:
+      hostgroups:
+        - ab
+      transport:
+        - /home/kindlehl/.zshrc:/home/kindlehl/.zshrc
+      commands: 
+        - ls /test/path
