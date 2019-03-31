@@ -1,13 +1,12 @@
 """Module for shelli program"""
 
 __all__ = [
+    'authenticate',
     'cli_parser',
     'conf',
     'hostgroup',
     'host',
-    'executor',
-    'target'
+    'execute',
+    'target',
+    'transport'
 ]
-
-if __name__ == '__main__':
-    import main
