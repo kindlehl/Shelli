@@ -12,11 +12,11 @@ from shelli import host
 def create_host_groups_from_yaml(yaml):
     """Loads groups into list from yaml passed in"""
 
-    groups = []
+    groups = {}
     hosts = host.create_hosts_from_yaml(yaml)
     for groupyml in yaml['hostgroups']:
         groupname = list(groupyml.keys())[0]
-        groups.append(HostGroup(groupname, groupyml[groupname], hosts))
+        groups[groupname] = HostGroup(groupname, groupyml[groupname], hosts)
     return groups
 
 # Valid YAML exerpt
@@ -46,7 +46,7 @@ class HostGroup:
             self.options.update(yaml['options'])
 
         self.hosts = {}
-        for host_object in all_host_objects:
+        for host_object in all_host_objects.values():
             if host_object.hostname in self.hostnames:
                 new_host = copy.deepcopy(host_object)
 

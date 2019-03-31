@@ -1,7 +1,6 @@
 """
-Class for hosts and their authentication paramters.
-Also provides helper functions for loading host objects
-from yaml
+Class for hosts and their authentication paramters.  Also provides
+helper functions for loading host objects from yaml.
 """
 
 import copy
@@ -31,7 +30,7 @@ def default_options():
 def create_hosts_from_yaml(yaml):
     """Creates a list of host objects from yaml config."""
 
-    hosts = []
+    hosts = {}
     for host_object in yaml['hosts']:
         if isinstance(host_object, str):
             hostname = host_object
@@ -40,13 +39,13 @@ def create_hosts_from_yaml(yaml):
             hostname = list(host_object.keys())[0]
 
         if host_object[hostname] is None:
-            hosts.append(Host(hostname, default_options()))
+            hosts[hostname] = Host(hostname, default_options())
         else:
             # Put all things like auth_method, auth_user in
             # a variable called options on the host object
             options = default_options()
             options.update(host_object[hostname])
-            hosts.append(Host(hostname, options))
+            hosts[hostname] = Host(hostname, options)
     return hosts
 
 class Host:
@@ -62,6 +61,12 @@ class Host:
 
     def __str__(self):
         return "%s@%s" % (self.options['username'], self.hostname)
+
+    def __hash__(self):
+        return str(self)
+
+    def __cmp__(self, rhs):
+        return str(self) == str(rhs)
 
     def __repl__(self):
         return str(self)
