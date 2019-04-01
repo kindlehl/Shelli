@@ -137,3 +137,23 @@ and can contains a list of commands and hostgroups. Optionally, transports can b
 - commands: List of shell commands to run in order on the hosts in the hostgroups hash that is supplied.
 - transport: Optional list of files in the form <localpath>:<remotepath> that get copied to each host before commands
   are run.  They are removed afterwards.
+
+Issues
+------
+
+Feel free to submit issues and enhancement requests.
+
+Contributing
+------------
+
+ 1. **Fork** the repo on GitHub
+ 2. **Clone** the project to your own machine
+ 3. **Environment** Create virtualenv and install the packages in requirements.txt
+ 3. **Lint** Run `pylint shelli` from the base of the project. Make sure the score is 10/10.
+ 3. **Test** Run `python -m unittest discover -s test -v` from the base of the project. Add your own tests and
+		make sure your changes don't break other tests.
+ 3. **Commit** changes to your own branch
+ 4. **Push** your work back up to your fork
+ 5. Submit a **Pull request** so that we can review your changes
+
+NOTE: Be sure to merge the latest from "upstream" before making a pull request!
