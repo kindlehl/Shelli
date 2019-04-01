@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='Shelli',
-    version='0.0',
+    version='0.1',
     description=open('README.md').read(),
     url='https://github.com/kindlehl/shelli',
     author='Hunter Lannon',
