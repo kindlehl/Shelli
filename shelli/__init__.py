@@ -4,9 +4,10 @@ __all__ = [
     'authenticate',
     'cli_parser',
     'conf',
+    'execute',
     'hostgroup',
     'host',
-    'execute',
+    'main',
     'target',
     'transport'
 ]
