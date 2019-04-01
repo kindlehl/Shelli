@@ -23,7 +23,7 @@ class TestAuthenticate(unittest.TestCase):
         self.assertEqual(conn.port, 22)
 
     def test_reuse_connections(self):
-        before_id = id(self.host.options)
+        before_id = id(self.host)
         conn = authenticate.get_connection(self.host)
         conn = authenticate.get_connection(self.host)
         conn = authenticate.get_connection(self.host)

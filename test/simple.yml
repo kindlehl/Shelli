@@ -29,7 +29,7 @@ targets:
   - my_scripts:
       hostgroups:
         - DNS
-      transport:
+      transports:
         - /home/kindlehl/my_script1:/tmp/my_script1
         - /home/kindlehl/my_script1:/tmp/my_script2
       commands:

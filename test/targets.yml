@@ -18,7 +18,7 @@ targets:
       hostgroups:
         - ab
         - ac
-      transport:
+      transports:
         - /home/kindlehl/.zshrc:/root/.zshrc
       commands: 
         - ls /home
@@ -26,7 +26,7 @@ targets:
   - ab:
       hostgroups:
         - ab
-      transport:
+      transports:
         - /home/kindlehl/.zshrc:/home/kindlehl/.zshrc
       commands: 
         - ls /test/path
