@@ -91,5 +91,5 @@ def handle_connection_errors(connection, options):
     except paramiko.ssh_exception.SSHException:
         if options['key'] is not None:
             sys.stderr.write("Could not handle {key}. Does it exist? New"\
-                    " key formats might also not be supported.".format(key=options['key']))
+                    " key formats might also not be supported.\n".format(key=options['key']))
             exit(1)

@@ -24,8 +24,8 @@ class Target:
         self.commands = target_yaml['commands']
         self.hostgroup_names = target_yaml['hostgroups']
 
-        if 'transport' in list(target_yaml.keys()):
-            self.transports = target_yaml['transport']
+        if 'transports' in list(target_yaml.keys()):
+            self.transports = target_yaml['transports']
         else:
             self.transports = []
 
