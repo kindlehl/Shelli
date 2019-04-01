@@ -28,7 +28,7 @@ class Executor:
 
     def execute(self):
         """Actually execute commands from a target onto its hosts"""
-
+  
         # Get all connections. Will probably require authentication.
         # This way makes sure all hosts get authentication information up-front
         # Instead of 5 minutes later, after running a long command

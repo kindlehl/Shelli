@@ -15,10 +15,13 @@ import paramiko
 # that request authentication information.
 CONNECTION_DICT = {}
 
-def authenticate(hostname, options):
+def authenticate(host):
     """
     Authenticate to the server. Will retry logins three times if password needs to be entered
     """
+    hostname = host.hostname
+    options = host.options
+
     kwargs = {
         'key_filename': None
     }
@@ -32,6 +35,8 @@ def authenticate(hostname, options):
                 hostname=options['key'],
                 prompt='Enter password for keyfile {hostname}: '
             )
+            # Update host options
+            options['password'] = kwargs['passphrase']
     else:
         if options['password'] is not None:
             kwargs['password'] = options['password']
@@ -62,12 +67,12 @@ def get_connection(host):
     returns it.
     """
     for options in CONNECTION_DICT:
-        if options is id(host.options):
-            return CONNECTION_DICT[id(host.options)]
+        if options == id(host):
+            return CONNECTION_DICT[id(host)]
 
     # Established connection not found, create one
-    CONNECTION_DICT[id(host.options)] = authenticate(host.hostname, host.options)
-    return CONNECTION_DICT[id(host.options)]
+    CONNECTION_DICT[id(host)] = authenticate(host)
+    return CONNECTION_DICT[id(host)]
 
 def get_password(hostname='localhost', prompt='Enter password for {hostname}: '):
     """
