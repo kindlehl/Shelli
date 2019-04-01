@@ -135,7 +135,7 @@ and can contains a list of commands and hostgroups. Optionally, transports can b
 
 - hostgroups: The hostgroups to apply the transports and commands on.
 - commands: List of shell commands to run in order on the hosts in the hostgroups hash that is supplied.
-- transport: Optional list of files in the form <localpath>:<remotepath> that get copied to each host before commands
+- transport: Optional list of files in the form `<localpath>:<remotepath>` that get copied to each host before commands
   are run.  They are removed afterwards.
 
 Issues
