@@ -3,7 +3,7 @@ Entry point for shelli cli
 """
 
 import sys
-from shelli import conf, target, cli_parser, execute
+from shelli import conf, target, cli_parser, execute, logger
 
 def main():
     """Does the things"""
@@ -19,6 +19,10 @@ def main():
     for targ in targets.values():
         if targ.name == args.target:
             target_found = True
+
+            # Configure log settings
+            logger.configure_from_target(targ)
+
             runner = execute.Executor(targ)
             runner.execute()
 
