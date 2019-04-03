@@ -4,8 +4,10 @@ to run commands from a target.
 """
 
 import sys
+from multiprocessing import Process, Pipe
 
 from shelli import authenticate
+from shelli import logger
 from shelli import transport
 
 # Executor takes a target. The target contains all the information it needs to execute code
@@ -15,11 +17,6 @@ class Executor:
     def __init__(self, target):
         """Nothing."""
         self.hosts = target.get_all_hosts()
-
-        self.longest_host_string = 0
-        for host in self.hosts:
-            if len(str(self.hosts[host])) > self.longest_host_string:
-                self.longest_host_string = len(str(self.hosts[host]))
 
         self.commands = target.commands
         self.transporters = []
@@ -32,30 +29,40 @@ class Executor:
         # Get all connections. Will probably require authentication.
         # This way makes sure all hosts get authentication information up-front
         # Instead of 5 minutes later, after running a long command
-        conns = {}
+        connections = {}
         for cur_host in self.hosts.values():
             print("Creating connection {name}".format(name=cur_host))
-            conns[str(cur_host)] = authenticate.get_connection(cur_host)
+            connections[str(cur_host)] = authenticate.get_connection(cur_host)
 
-        for conn in conns:
-            # Transport any necessary files
-            self.do_transport(conns[conn])
+        threads = []
+        # For each connection, spawn a thread and start it
+        for hostname in connections:
+           thread = Process(target=self.thread_execute, args=(hostname, connections[hostname]))
+           thread.start()
+           threads.append(thread)
 
-            # Run commands
-            self.run(conn, self.commands, conns[conn])
+        # Stall until all remote commands are done running
+        for thread in threads:
+            thread.join()
 
-            # Clean up, ya filthy animal
-            self.cleanup(conns[conn])
+    def thread_execute(self, hostname, connection):
+        # Transport any necessary files
+        self.do_transport(connection)
+
+        # Run commands
+        self.run(hostname, self.commands, connection)
+
+        # Clean up, ya filthy animal
+        self.cleanup(connection)
+        
 
     def run(self, message, commands, connection):
         """Runs a command on a given connection"""
         for command in commands:
-            prompt_header = "[{}]".format(message)
-            format_string = "{: <" + str(self.longest_host_string + 2) + "}"
-            prompt_header = format_string.format(prompt_header)
-            prompt_body = "\tRunning '{}'\n".format(command)
-            sys.stderr.write(prompt_header + prompt_body)
-            sys.stderr.flush()
+            # Tell user what the heck is going on
+            logger.report(message, "Running {}".format(command))
+
+            # Run the command
             connection.run(command)
 
     def do_transport(self, connection):
